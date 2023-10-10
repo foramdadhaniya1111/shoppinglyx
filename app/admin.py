@@ -17,7 +17,6 @@ class Cartmodeladmin(admin.ModelAdmin):
     list_display = ['id','user','product','quantity']
 
 
-
 @admin.register(Orderplaced)
 class Orderplacedmodeladmin(admin.ModelAdmin):
     list_display = ['id','user','customer','product','quantity','ordered_date','status']
