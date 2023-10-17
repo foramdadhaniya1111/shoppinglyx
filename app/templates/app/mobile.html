@@ -7,8 +7,13 @@
   <div class="col-sm-3">
    <div class="list-group">
     <a href="{% url 'mobile' %}" class="list-group-item list-group-item-action" aria-current="true">All Mobile</a>
-    <a href="{% url 'mobiledata' 'iphone' %}" class="list-group-item list-group-item-action" aria-current="true">IPhone</a>
-    <a href="{% url 'mobiledata' 'oppo' %}" class="list-group-item list-group-item-action" aria-current="true">Oppo</a>
+    {% for cat in mobiles %}
+    
+    <a href="{{cat.id}}" class="list-group-item list-group-item-action" aria-current="true">{{cat.brand}}</a>
+
+    {% endfor %}
+    
+    {% comment %} <a href="{% url 'mobiledata' 'oppo' %}" class="list-group-item list-group-item-action" aria-current="true">Oppo</a> {% endcomment %}
     <a href="{% url 'mobiledata' 'below' %}" class="list-group-item list-group-item-action" aria-current="true">Below 40</a>
     <a href="{% url 'mobiledata' 'above' %}" class="list-group-item list-group-item-action" aria-current="true">Above 20</a>
 
