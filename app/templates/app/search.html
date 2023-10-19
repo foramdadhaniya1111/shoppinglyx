@@ -1,0 +1,76 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Search{% endblock title %}
+{% block main-content %}
+{% comment %} <h3>{{topwear }}</h3>  {% endcomment %}
+<!-- 1st Product Slider -->
+<div class="m-3">
+ <h2>ShoppingX Bottom wears</h2>
+ <!-- Slider 1 -->
+ 
+ 
+ {% for b in bottomwear %}
+  
+    <a href="{% url 'product-detail' b.id %}" class="btn"><div class="item"><img src="{{b.product_image.url}}" alt="" height="200px"><span class="fw-bold">{{b.title}}</span><br><span class="fs-5">Rs. {{b.discounted_price}}ID:{{b.id}}</span></div></a>
+
+  {% endfor %}
+  
+ 
+</div> 
+<!-- End 1st Product Slider -->
+
+
+<!-- 2nd Product Slider -->
+<div class="mx-3">
+ <h2>ShoppinglyX Top wears</h2>
+ <!-- Slider 2 -->
+ {% comment %} <div class="owl-carousel" id="slider2"> {% endcomment %}
+  {% for t in topwear %}
+  
+    <a href="{% url 'product-detail' t.id %}" class="btn"><div class="item"><img src="{{t.product_image.url}}" alt="" height="200px"><span class="fw-bold">{{t.title}}</span><br><span class="fs-5">Rs. {{t.discounted_price}}</span></div></a>
+
+  {% endfor %}
+</div>
+</div>
+<!-- End 2nd Product Slider -->
+
+
+<!-- 3rd Product Slider -->
+<div class="mx-3">
+ <h2>ShoppinglyX  Mobile</h2>
+ <!-- Slider 3 -->
+ {% comment %} <div class="owl-carousel" id="slider3"> {% endcomment %}
+  {% for m in mobile %}
+  
+    <a href="{% url 'product-detail' m.id %}" class="btn"><div class="item"><img src="{{m.product_image.url}}" alt="" height="200px"><span class="fw-bold">{{m.title}}</span><br><span class="fs-5">Rs. {{m.discounted_price}}</span></div></a>
+
+  {% endfor %}
+</div>
+</div>
+<!-- End 3rd Product Slider -->
+
+
+<!-- 4rd Product Slider -->
+<div class="mx-3">
+ <h2>ShoppinglyX  Laptop</h2>
+ <!-- Slider 4 -->
+ {% comment %} <div class="owl-carousel" id="slider4"> {% endcomment %}
+  {% for l in laptop %}
+  
+    <a href="{% url 'product-detail' l.id %}" class="btn"><div class="item"><img src="{{l.product_image.url}}" alt="" height="200px"><span class="fw-bold">{{l.title}}</span><br><span class="fs-5">Rs. {{l.discounted_price}}</span></div></a>
+
+  {% endfor %}
+</div>
+</div>
+<!-- End 4rd Product Slider -->
+<p>{{allprods}}</p>
+{% for l in allprods %}
+  
+    <a href="{% url 'product-detail' l.id %}" class="btn"><div class="item"><img src="{{l.product_image.url}}" alt="" height="200px"><span class="fw-bold">{{l.title}}</span><br><span class="fs-5">Rs. {{l.discounted_price}}</span></div></a>
+
+  {% endfor %}
+
+
+
+{% endblock main-content %}
+

@@ -1,19 +1,17 @@
 {% extends 'app/base.html' %}
 {% load static %}
-{% block title %}Mobile{% endblock title %}
+{% block title %}Bottomwear{% endblock title %}
 {% block main-content %}
 <div class="container my-5">
  <div class="row">
   <div class="col-sm-3">
    <div class="list-group">
-    <a href="{% url 'mobile' %}" class="list-group-item list-group-item-action" aria-current="true">All Mobile</a>
+    <a href="{% url 'bottomwear' %}" class="list-group-item list-group-item-action" aria-current="true">All Bottom wear</a>
     {% for cat in brand_list %}
     
-    <a href="{% url 'mobiledata' cat %}" class="list-group-item list-group-item-action" aria-current="true">{{cat}}</a>
+    <a href="{% url 'bottomweardata' cat %}" class="list-group-item list-group-item-action" aria-current="true">{{cat}}</a>
 
     {% endfor %}
-    
-
 
    </div>
    </div>

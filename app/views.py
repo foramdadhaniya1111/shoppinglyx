@@ -1,10 +1,12 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse
 from django.views import View
 from .models import Customer,Product,Cart,Orderplaced
 from .forms import Customerregistrationform,Customerprofileform
 from django.contrib import messages
 from django.db.models import Q
 from django.http import JsonResponse
+
+
 
 
 # def home(request):
@@ -14,7 +16,9 @@ class Productview(View):
         topwears = Product.objects.filter(category='TW')
         bottomwears = Product.objects.filter(category='BW')
         mobiles = Product.objects.filter(category='M')
-        return render(request,'app/home.html',{'topwears':topwears,'bottomwears':bottomwears,'mobiles':mobiles})
+        laptops = Product.objects.filter(category='L')
+        print(laptops)
+        return render(request,'app/home.html',{'topwears':topwears,'bottomwears':bottomwears,'mobiles':mobiles,'laptops':laptops})
         
 
 
@@ -22,6 +26,18 @@ class Productdetailview(View):
     def get(self,request,pk):
         product = Product.objects.get(pk=pk)
         return render(request,'app/productdetail.html',{'product':product})
+
+def show(request,category,data=None):
+    brands = Product.objects.filter(category=category).values_list('brand',flat=True).distinct()
+    if data == None:
+        products = Product.objects.filter(category=category)
+        
+    else:
+        products = Product.objects.filter(category=category).filter(brand=data)
+        
+    detail = {'products':products,'brand_list':brands}
+    
+    return detail
 
 def add_to_cart(request):
     user = request.user
@@ -111,26 +127,7 @@ def remove_cart(request):
   return JsonResponse(data)
  
  
-# def plus_cart(request):
-#     if request.method == 'GET':
-#         prod_id = request.GET['prod_id'] 
-#         c = Cart.objects.get(Q(product=prod_id)& Q(user=request.user))  
-#         c.quantity += 1
-#         c.save()                      
-#         amount = 0.0
-#         shipping_amount = 70.0
-#         cart_product = [p for p in Cart.objects.all() if p.user == request.user]
-#         for p in cart_product:
-#             tempamount = (p.quantity * p.product.discounted_price)
-#             amount += tempamount
-            
-#         data = {
-#             'quantity':c.quantity,
-#             'amount':amount,
-#             'totalamount':amount + shipping_amount,
-#             # 'totalamount':totalamount
-#         }
-#         return JsonResponse(data)
+
     
 def buy_now(request):
  return render(request, 'app/buynow.html')
@@ -143,24 +140,107 @@ def address(request):
 def orders(request):
  return render(request, 'app/orders.html')
 
-# def change_password(request):
-#  return render(request, 'app/changepassword.html')
+
 
 def mobile(request,data=None):
-    mb = Product.objects.filter(category='M')
-    print(mb)
-    if data == None:
-        mobiles = Product.objects.filter(category='M').order_by('id')
-    else:
-        mobiles = Product.objects.filter(category='M').filter(mb=data)
+    content = show(request,'M',data)
+    return render(request, 'app/mobile.html',content)
+
+
+
+
+    # mb = Product.objects.filter(category='M').values_list('brand',flat=True).distinct()
+    # print(mb)
+    # if data == None:
+    #     mobiles = Product.objects.filter(category='M')
+    # else:
+    #     mobiles = Product.objects.filter(category='M').filter(brand=data)
     # elif data == 'below':
     #     mobiles = Product.objects.filter(category='M').filter(discounted_price__lt=40)
     # elif data == 'above':
     #     mobiles = Product.objects.filter(category='M').filter(discounted_price__gt=20)
-    return render(request, 'app/mobile.html',{'mobiles':mobiles,'mb':mb})
+    # return render(request, 'app/mobile.html',{'mobiles':mobiles,'mb':mb})
+    
 
  
+ 
+def topwear(request,data=None):
+    content = show(request,'TW',data)
+    return render(request, 'app/topwear.html',content)
+    # tw = Product.objects.filter(category='TW').values_list('brand',flat=True).distinct()
+    # print(tw)
+    # if data == None:
+    #     topwear = Product.objects.filter(category='TW')
+    # else:
+    #     topwear = Product.objects.filter(category='TW').filter(brand=data)
+    # return render(request, 'app/topwear.html',{'topwear':topwear,'tw':tw})
+
+
+def bottomwear(request,data=None):
+    content = show(request,'BW',data)
+    return render(request, 'app/bottomwear.html',content)
+
+
+    # bw = Product.objects.filter(category='BW').values_list('brand',flat=True).distinct()
+    # print(bw)
+    # if data == None:
+    #     bottomwear = Product.objects.filter(category='BW')
+    # else:
+    #     bottomwear = Product.objects.filter(category='BW').filter(brand=data)
+    # elif data == 'below':
+    #     mobiles = Product.objects.filter(category='M').filter(discounted_price__lt=40)
+    # elif data == 'above':
+    #     mobiles = Product.objects.filter(category='M').filter(discounted_price__gt=20)
+    # return render(request, 'app/bottomwear.html',{'bottomwear':bottomwear,'bw':bw})
+
+
+
+def laptop(request,data=None):
+    content = show(request,'L',data)
+    return render(request, 'app/laptop.html',content)
+
+
+    # l = Product.objects.filter(category='L').values_list('brand',flat=True).distinct()
+    # print(l)
+    # if data == None:
+    #     laptop = Product.objects.filter(category='L')
+    # else:
+    #     laptop = Product.objects.filter(category='L').filter(brand=data)
+    # elif data == 'below':
+    #     mobiles = Product.objects.filter(category='M').filter(discounted_price__lt=40)
+    # elif data == 'above':
+    #     mobiles = Product.objects.filter(category='M').filter(discounted_price__gt=20)
+    # return render(request, 'app/laptop.html',{'laptop':laptop,'l':l})
     
+
+# def search(request):
+#     query = request.GET['query']
+#     if query:
+#         topwear = Product.objects.filter(category='TW').filter(title__icontains=query)
+#         bottomwear = Product.objects.filter(category='BW').filter(title__icontains=query)
+#         laptop = Product.objects.filter(category='L').filter(title__icontains=query)
+#         mobile = Product.objects.filter(category='M').filter(title__icontains=query)
+        
+#         return render(request,'app/search.html',{'topwear':topwear,'bottomwear':bottomwear,'laptop':laptop,'mobile':mobile})
+#     else:
+#         return HttpResponse('<h1 align="center">This page not found</h1>')
+
+
+def search(request):
+    query = request.GET['query']
+    # print(query)
+    if len(query) > 78:
+        allprods = Product.objects.none()
+    else:
+        allprodbrand = Product.objects.filter(brand__icontains=query)
+        allprodtitle = Product.objects.filter(title__icontains=query)
+        allprodcat = Product.objects.filter(category__icontains=query)
+        allprods = allprodcat.union(allprodbrand,allprodtitle)
+    if allprods.count() == 0:
+        messages.warning(request, "No search results found. Please refine your query.")
+    params = {'allprods': allprods, 'query': query}
+    return render(request, 'app/search.html', params)
+
 
 
 class Customerregistrationview(View):
